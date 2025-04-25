@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>show.html</title>
+  </head>
+  <body>
+    <div id="app">
+      v-show test
+      <!-- v-if는 태그 자체가 보이지 않는다. -->
+      <!-- v-show는 style="display: none;"으로 변경된다. -->
+      <div v-show="isVisible">vue show</div>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            isVisible: true,
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

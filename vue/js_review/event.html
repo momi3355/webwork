@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js_review/event.html</title>
+  </head>
+  <body>
+    <input type="text" id="txt" />
+    <a href="http://www.naver.com" id="goBtn">네이버로 이동</a>
+    <div id="div">
+      <button type="button" id="btn">클릭</button>
+    </div>
+    <script>
+      txt.addEventListener("keypress", () => {
+        console.log(event.keyCode);
+        if (event.keyCode == 13) {
+          //enter
+          alert("입력완료");
+        }
+      });
+      goBtn.addEventListener("click", () => {
+        if (!confirm("이동할까요?")) {
+          event.preventDefault(); //원래 기능을 막음 (주로 <a>, <input type="submit">)
+        } else {
+          alert("이동");
+        }
+      });
+      div.addEventListener("click", () => {
+        //alert("div 클릭");
+        console.log(event.clientX, event.clientY);
+      });
+      btn.addEventListener("click", () => {
+        //event.stopPropagation(); //이벤트 전파 중지
+        //alert("btn 클릭");
+      });
+
+      //여기서 btn을 누르면 div, btn 2번 눌러진다.
+      // 이 현상을 "이벤트 버블링"이라고 한다.
+    </script>
+  </body>
+</html>

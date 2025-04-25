@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>movie.html</title>
+  </head>
+  <body>
+    <div id="app">
+      <button @click="select()">조회</button>
+      <input
+        type="text"
+        v-model="targetDt"
+        :value="targetDt"
+        @keyup.enter="select()"
+      />
+
+      <ul id="myUL">
+        <table>
+          <tr>
+            <th>순위</th>
+            <th>영화이름</th>
+            <th>상영일</th>
+            <th>누적관객수</th>
+            <th>관객수</th>
+          </tr>
+          <!-- rank, movieNm, showCnt -->
+          <tr v-for="m in movies">
+            <td>{{m.rank}}</td>
+            <td>{{m.movieNm}}</td>
+            <td>{{m.openDt}}</td>
+            <td>{{m.audiAcc}}</td>
+            <td>{{m.audiCnt}}</td>
+          </tr>
+        </table>
+      </ul>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            targetDt: "20200420",
+            movies: [],
+          };
+        },
+        methods: {
+          select() {
+            fetch(
+              "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=12664b24453335d2c3eca0fdc4b3b013&targetDt=" +
+                this.targetDt
+            )
+              .then((response) => response.json())
+              .then((response) => {
+                this.movies = response.boxOfficeResult.dailyBoxOfficeList;
+              });
+            //console.log(this.movies);
+          },
+        },
+        mounted() {
+          this.select();
+          console.log(this);
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>for2.html</title>
+  </head>
+  <body>
+    <div id="app">
+      <table>
+        <tr>
+          <th>no.</th>
+          <th>이름</th>
+          <th>직급</th>
+          <th>봉급</th>
+        </th>
+        <tr v-for="(item, idx) in emps">
+          <td>{{idx+1}}</td>
+          <td>{{item.firstName}}</td>
+          <td>{{item.dept}}</td>
+          <td>{{item.sal}}</td>
+        </tr>
+      </table>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const { createApp } = Vue;
+      //[
+      //  {
+      //    firstName: "홍길동",
+      //    dept: "개발",
+      //    sal: 2000,
+      //  }, { ... }, ...
+      //]
+      createApp({
+        data() {
+          return {
+            emps: [
+              {
+                firstName: "홍길동",
+                dept: "개발",
+                sal: 2000,
+              },
+              {
+                firstName: "강길동",
+                dept: "개발",
+                sal: 4000,
+              },
+              {
+                firstName: "동길동",
+                dept: "개발",
+                sal: 8000,
+              },
+            ],
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

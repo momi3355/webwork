@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js_review/array.html</title>
+  </head>
+  <body>
+    <div class="fruit">
+      <p>사과</p>
+      <p>바나나</p>
+      <p>오렌지</p>
+    </div>
+  </body>
+  <script>
+    const fruits = document.querySelectorAll(".fruit p");
+    fruits.forEach((el, idx) => console.log(el.innerHTML));
+    let arr = Array.from(fruits).map((ele) => ele.innerHTML);
+    console.log(arr);
+    // let array = Array.from(fruits);
+    // console.log(array);
+  </script>
+</html>

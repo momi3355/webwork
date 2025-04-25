@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>js_review/axios.html</title>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const url = "https://jsonplaceholder.typicode.com/posts";
+      const data = {
+        title: "오늘할일",
+        body: "js공부하자",
+        userId: 1,
+      };
+
+      axios //axios는 json를 요청하고, json으로 응답 받는다.
+        .post(url, data) //함수중에 post, get으로 나눠져있다.
+        .then((res) => console.log(res.data))
+        .catch((err) => console.error(err));
+    </script>
+  </body>
+</html>

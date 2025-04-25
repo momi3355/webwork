@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>js_review/axios_movie.html</title>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const url =
+        "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=12664b24453335d2c3eca0fdc4b3b013&targetDt=20250424";
+      axios //fetch보다 조금 간단하게 작업이 가능하다.
+        .get(url)
+        .then(
+          (res) =>
+            console.log(res.data.boxOfficeResult.dailyBoxOfficeList[0].movieNm) //1위의 영화제목
+        )
+        .catch((err) => console.error(err));
+    </script>
+  </body>
+</html>

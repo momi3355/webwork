@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>객체분해(destructing)</title>
+  </head>
+  <body></body>
+  <script>
+    let person = { first: "scott", last: "tom" };
+    // let first = person.first;
+    // let last = person.last;
+    const { first, last } = person; //person 객체에서 first, last를 들고 온다.
+    console.log(first, ",", last);
+  </script>
+</html>
