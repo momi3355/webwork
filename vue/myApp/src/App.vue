@@ -53,7 +53,7 @@ export default {
               >
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link active" to="/empForm"
+              <RouterLink class="nav-link active" to="/empView"
                 >사원정보</RouterLink
               >
             </li>
@@ -64,8 +64,6 @@ export default {
             </li>
             <li class="nav-item">
               <RouterLink class="nav-link active" to="/paramView/kim"
-                >파라미터</RouterLink
-              ><RouterLink class="nav-link active" to="/paramView/park"
                 >파라미터</RouterLink
               >
             </li>
