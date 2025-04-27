@@ -62,25 +62,28 @@ export default {
         <input class="form-control" v-model="emp.last_name" />
       </div>
     </div>
-
-    <label class="col-sm-2 col-form-label">job id :</label>
-    <div class="form-check form-check-inline">
-      <input
-        type="radio"
-        class="form-check-input"
-        v-model="emp.job_id"
-        value="it"
-      />
-      <label class="form-check-label">IT</label>
-    </div>
-    <div class="form-check form-check-inline">
-      <input
-        type="radio"
-        class="form-check-input"
-        v-model="emp.job_id"
-        value="sales"
-      />
-      <label class="form-check-label">SALES</label>
+    <div class="mb-3 row g-3">
+      <label class="col-sm-2 col-form-label">job id :</label>
+      <div class="col-auto">
+        <div class="form-check form-check-inline">
+          <input
+            type="radio"
+            class="form-check-input"
+            v-model="emp.job_id"
+            value="it"
+          />
+          <label class="form-check-label">IT</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            type="radio"
+            class="form-check-input"
+            v-model="emp.job_id"
+            value="sales"
+          />
+          <label class="form-check-label">SALES</label>
+        </div>
+      </div>
     </div>
     <div class="mb-3 row g-3">
       <label class="col-sm-2 col-form-label">부서:</label>
