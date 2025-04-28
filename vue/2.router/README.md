@@ -14,6 +14,6 @@ json-server를 사용해서 설치 후 실행
 `public/empdata.json`를 통해서 서버를 구축
 
 ```sh
-npm install json-server
-npx json-server public/empdata.json
+$ npm install json-server
+$ npx json-server public/empdata.json
 ```
