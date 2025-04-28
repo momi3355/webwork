@@ -19,11 +19,15 @@ export default {
   },
   methods: {
     addTodo() {
-      // ...
+      this.todos.push({
+        id: id++,
+        text: this.newTodo,
+      });
       this.newTodo = "";
     },
-    removeTodo(todo) {
-      // ...
+    removeTodo(id) {
+      let idx = this.todos.findIndex((e) => e.id === id);
+      this.todos.splice(idx, 1);
     },
   },
 };
@@ -35,6 +39,6 @@ export default {
     <button>할 일 추가</button>
   </form>
   <ul>
-    <todo-item v-for="todo in todos" v-bind="todo" />
+    <todo-item v-for="todo in todos" v-bind="todo" @remove-todo="removeTodo" />
   </ul>
 </template>

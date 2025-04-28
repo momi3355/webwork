@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     removeTodo(id) {
-      //TODO : 이곳부터
+      this.$emit("remove-todo", id);
     },
   },
 };
