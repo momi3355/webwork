@@ -22,6 +22,11 @@ const router = createRouter({
       name: "nested",
       component: () => import("@/views/NestedComponent.vue"),
     },
+    {
+      path: "/parent",
+      name: "parent",
+      component: () => import("@/views/ParentComponent4.vue"),
+    },
   ],
 });
 

@@ -2,6 +2,10 @@
   <page-title :title />
   <blog-post v-bind="post" />
   <!-- 객체 전달도 가능 -->
+  <hr />
+  <blog-post v-for="post in posts" v-bind="post" />
+  <!-- for문을 사용할 수 있다. -->
+  <hr />
   <blog-post
     :likes="50"
     :is-published="post.isShow"
@@ -27,10 +31,24 @@ export default {
   data() {
     return {
       title: "동적페이지이름",
+      posts: [
+        {
+          isPublished: false,
+          title: "블로그1",
+        },
+        {
+          isPublished: true,
+          title: "블로그2",
+        },
+        {
+          isPublished: false,
+          title: "블로그3",
+        },
+      ],
       post: {
         title: "vue 블로그",
         likes: 100,
-        isShow: true,
+        isPublished: true,
         commentIds: [400, 200, 150],
       },
     };
