@@ -1,3 +1,3 @@
-# myApp
+# 2.router
 
-뷰(vue)를 공부하기 위한 프로젝트
+router 를 공부하기 위한 프로젝트
