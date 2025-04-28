@@ -32,21 +32,25 @@ export default {
 
   <ul id="myUL">
     <table>
-      <tr>
-        <th>순위</th>
-        <th>영화이름</th>
-        <th>상영일</th>
-        <th>누적관객수</th>
-        <th>관객수</th>
-      </tr>
-      <!-- rank, movieNm, showCnt -->
-      <tr v-for="m in movies">
-        <td>{{ m.rank }}</td>
-        <td>{{ m.movieNm }}</td>
-        <td>{{ m.openDt }}</td>
-        <td>{{ m.audiAcc }}</td>
-        <td>{{ m.audiCnt }}</td>
-      </tr>
+      <thead>
+        <tr>
+          <th>순위</th>
+          <th>영화이름</th>
+          <th>상영일</th>
+          <th>누적관객수</th>
+          <th>관객수</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- rank, movieNm, showCnt -->
+        <tr v-for="m in movies">
+          <td>{{ m.rank }}</td>
+          <td>{{ m.movieNm }}</td>
+          <td>{{ m.openDt }}</td>
+          <td>{{ m.audiAcc }}</td>
+          <td>{{ m.audiCnt }}</td>
+        </tr>
+      </tbody>
     </table>
   </ul>
 </template>
