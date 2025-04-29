@@ -54,17 +54,19 @@ app.get("/emp", (req, res) => {
 
 //부서가 10번인 첫번째 사원
 app.get("/find", (req, res) => {
-  res.send("Hello Cart!");
+  res.send(data.find((e) => e.department_id === 10));
 });
 
 // job_id가 'it'인 사원만 조회
 app.get("/filter", (req, res) => {
-  res.send("Hello Cart!");
+  res.send(data.filter((e) => e.job_id === "it"));
 });
 
 // firstname 순으로 정렬
 app.get("/sort", (req, res) => {
-  res.send("Hello Cart!");
+  //data.sort((a, b) => b.first_name.localeCompare(a.first_name));
+  data.sort((a, b) => a.first_name.localeCompare(b.first_name));
+  res.send(data);
 });
 
 app.listen(port, () => {
