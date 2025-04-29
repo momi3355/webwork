@@ -7,17 +7,40 @@
   </head>
   <body>
     <div class="fruit">
-      <p>사과</p>
-      <p>바나나</p>
-      <p>오렌지</p>
+      <p data-price="300">사과</p>
+      <p data-price="500">바나나</p>
+      <p data-price="100">오렌지</p>
     </div>
   </body>
   <script>
     const fruits = document.querySelectorAll(".fruit p");
     fruits.forEach((el, idx) => console.log(el.innerHTML));
-    let arr = Array.from(fruits).map((ele) => ele.innerHTML);
+    let arr = Array.from(fruits).map((ele) => ({
+      name: ele.innerHTML,
+      price: ele.dataset.price, //data로 시작하는 속성. 객체로 변환
+      //price: ele.getAttribute("data-price"), //으로 사용해도 됨,
+    }));
+    //object로 변환할려면, ()안에 있으면 가능.
     console.log(arr);
     // let array = Array.from(fruits);
     // console.log(array);
+
+    //파괴함수 (원본 수정)
+    arr.sort((a, b) => {
+      if (a.price > b.price) return 1;
+      else if (a.price == b.price) return 0;
+      else return -1;
+    });
+    //arr.sort((a, b) => a.price - b.price);
+    console.log(arr);
+
+    //find(1) vs filter(n)
+    //find는 하나만 검색
+    let findResult = arr.find((e) => e.price > 200);
+    console.log("find", findResult); //{name: '사과', price: '300'}
+
+    //filter는 여려 검색
+    let filterResult = arr.filter((e) => e.price > 200);
+    console.log("filter", filterResult); //[ {name: '사과', price: '300'}, {name: '바나나', price: '500'} ]
   </script>
 </html>

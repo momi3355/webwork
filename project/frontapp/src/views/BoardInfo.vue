@@ -43,6 +43,7 @@
               <button class="btn btn-xs btn-warning" @click="goToListForm()">
                 목록
               </button>
+              <button class="btn btn-xs btn-danger" @click="">삭제</button>
             </td>
           </tr>
         </tbody>
