@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 3100;
 
 //json-server의 emp
 let data = [
@@ -42,24 +42,56 @@ let data = [
   },
 ];
 
+function notFound() {
+  return "element not found 😥";
+}
+
 //라우터를 설정가능
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-//부서정보 출력
+//사원정보 출력(전체)
 app.get("/emp", (req, res) => {
   res.send(data);
 });
 
-//부서가 10번인 첫번째 사원
-app.get("/find", (req, res) => {
-  res.send(data.find((e) => e.department_id === 10));
+//사원정보 출력(단건) -> REST방식
+//REST: 클라이언트와 서버 간 통신에서 리소스의 상태와 표현
+//파라미터 'id'
+app.get("/emp/:id", (req, res) => {
+  let id = req.params.id; //req에 파라미터가 저장되어 있다.
+  let result = data.find((e) => e.id === id);
+  if (result) {
+    res.send(result);
+  } else {
+    res.send(notFound());
+  }
 });
 
-// job_id가 'it'인 사원만 조회
+//부서정보 검색
+app.get("/find", (req, res) => {
+  let deptId = req.query.dept; // '/find?dept=10'
+  //주소에 '?'를 적는 방식을 쿼리라고 한다.
+  let result = data.find((e) => e.department_id == deptId);
+  //10 == '10' 타입이 다르기때문에 '=='을 해준다.
+  if (result) {
+    res.send(result);
+  } else {
+    res.send(notFound());
+  }
+});
+
+//일정보 검색
 app.get("/filter", (req, res) => {
-  res.send(data.filter((e) => e.job_id === "it"));
+  let job = req.query.job; // '/filter?job=it'
+  let result = data.filter((e) => e.job_id === job);
+  //없으면 '[]'
+  if (result.length > 0) {
+    res.send(result);
+  } else {
+    res.send(notFound());
+  }
 });
 
 // firstname 순으로 정렬
