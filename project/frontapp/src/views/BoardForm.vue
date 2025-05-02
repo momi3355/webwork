@@ -11,12 +11,16 @@
       <input type="text" id="writer" v-model="boardInfo.writer" />
 
       <label for="content">내용</label>
-      <textarea id="content" style="height: 200px">{{
-        boardInfo.content
-      }}</textarea>
+      <textarea
+        id="content"
+        style="height: 200px"
+        v-model="boardInfo.content"
+      ></textarea>
 
-      <label for="regdate">작성일자</label>
-      <input type="text" readonly v-model="boardInfo.created_date" />
+      <div v-if="this.searchNo > 0">
+        <label for="regdate">작성일자</label>
+        <input type="text" readonly v-bind:value="dateFormat" />
+      </div>
 
       <button
         type="button"
@@ -38,12 +42,37 @@ export default {
       boardInfo: {},
     };
   },
+  computed: {
+    dateFormat() {
+      let date = new Date(this.boardInfo.created_date);
+      return this.getFormattedDate(date);
+    },
+  },
   methods: {
+    padTwoDigits(num) {
+      return num.toString().padStart(2, "0");
+    },
+    getFormattedDate(date) {
+      return (
+        [
+          date.getFullYear(),
+          this.padTwoDigits(date.getMonth() + 1),
+          this.padTwoDigits(date.getDate()),
+        ].join("-") +
+        " " +
+        [
+          this.padTwoDigits(date.getHours()),
+          this.padTwoDigits(date.getMinutes()),
+          this.padTwoDigits(date.getSeconds()),
+        ].join(":")
+      );
+    },
+
     async fetchInfo() {
       let board = await axios.get(
         `http://localhost:3000/board/${this.searchNo}`
       );
-      this.boardInfo = board.data;
+      this.boardInfo = board.data[0];
     },
     async boardUpdate(id) {
       const url = "http://localhost:3000/board";

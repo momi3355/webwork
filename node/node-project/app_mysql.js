@@ -1,13 +1,21 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 //환경변수 설정
 require("dotenv").config({ path: "./mysql/.env" });
 
 const app = express();
-//const port = 3100;
-const port = 80;
+const port = 3000;
 
 //미들웨어 설정
+app.use(
+  cors({
+    //해당 도메인 허용
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+//app.use(cors()); //모든 도메인 허용
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan(":date[iso] :method :url :status :remote-addr"));
@@ -26,6 +34,8 @@ app.get("/", (req, res) => {
 
 //라우터 설정
 app.use("/customer", require("./routers/customer"));
+app.use("/board", require("./routers/board"));
+app.use("/comment", require("./routers/comment"));
 
 app.listen(port, function () {
   console.log(`listening server http://localhost:${port}`);
