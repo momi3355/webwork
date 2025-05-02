@@ -54,7 +54,7 @@ app.post("/profile", upload.single("avatar"), function (req, res) {
 //서버가 get방식으로 전달(app.get('경로', '실행_핸들러'))
 //'실행_핸들러'의 매개변수는 req(요청), res(응답)
 
-//경로 '/'
+//경로 '/'(엔드포인트)
 app.get("/", (req, res) => {
   res.send("hello");
 });
