@@ -1,0 +1,43 @@
+1. board 테이블 생성
+id                   PK, NN, AI
+title                NN
+writer
+content
+created_date
+
+2. boardSql.js
+customerSql.js 참조해서 제작
+쿼리구문만 모듈화
+
+3. 라우터
+/routers/customer.js 참초하는 board.js 제작
+
+4. app_mysql.app -> board 라우터 사용등록
+
+// comment
+1. comment 테이블 생성
+id                   PK, NN, AI
+writer
+content
+created_date
+bid               int --comment에서 추가된 칼럼
+
+2. commentSql.js
+customerSql.js 참조해서 제작
+쿼리구문만 모듈화
+전체 조회 : select * from comment where bid = ?
+
+3. 라우터
+/routers/customer.js 참초하는 comment.js 제작
+
+front : boardInfo.vue 페이징 LIMIT 
+
+1번 과제
+ - 댓글 목록
+ - 댓글 등록
+ - 댓글 삭제
+2번 과제
+ - customer frontapp 에 추가
+   - CustomerList.vue
+   - router 추가
+   - RouterLink 고객관리

@@ -11,12 +11,16 @@
       <input type="text" id="writer" v-model="boardInfo.writer" />
 
       <label for="content">내용</label>
-      <textarea id="content" style="height: 200px">{{
-        boardInfo.content
-      }}</textarea>
+      <textarea
+        id="content"
+        style="height: 200px"
+        v-model="boardInfo.content"
+      ></textarea>
 
-      <label for="regdate">작성일자</label>
-      <input type="text" readonly v-model="boardInfo.created_date" />
+      <div v-if="this.searchNo > 0">
+        <label for="regdate">작성일자</label>
+        <input type="text" readonly v-bind:value="date" />
+      </div>
 
       <button
         type="button"
@@ -30,6 +34,7 @@
 </template>
 <script>
 import axios from "axios";
+import { dateForment } from "@/module/date";
 
 export default {
   data() {
@@ -38,12 +43,18 @@ export default {
       boardInfo: {},
     };
   },
+  computed: {
+    date() {
+      const date = this.boardInfo.created_date;
+      return dateForment(date);
+    },
+  },
   methods: {
     async fetchInfo() {
       let board = await axios.get(
         `http://localhost:3000/board/${this.searchNo}`
       );
-      this.boardInfo = board.data;
+      this.boardInfo = board.data[0];
     },
     async boardUpdate(id) {
       const url = "http://localhost:3000/board";

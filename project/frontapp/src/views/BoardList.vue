@@ -19,16 +19,20 @@
           <td>{{ board.id }}</td>
           <td>{{ board.title }}</td>
           <td>{{ board.writer }}</td>
-          <td>{{ board.created_date }}</td>
+          <td>{{ this.date(board.created_date) }}</td>
           <td>{{ board.comment }}</td>
         </tr>
       </tbody>
     </table>
+    <button type="button" class="btn btn-xs btn-info" @click="addButton">
+      추가
+    </button>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { dateForment } from "@/module/date";
 
 export default {
   data() {
@@ -37,6 +41,9 @@ export default {
     };
   },
   methods: {
+    date(created_date) {
+      return dateForment(created_date);
+    },
     fetchList() {
       axios
         .get(`http://localhost:3000/board`)
@@ -48,6 +55,9 @@ export default {
     goToDetail(id) {
       this.$router.push({ path: "/boardInfo", query: { id: id } });
       //페이지 이동
+    },
+    addButton() {
+      this.$router.push({ path: "/boardForm" });
     },
   },
   mounted() {

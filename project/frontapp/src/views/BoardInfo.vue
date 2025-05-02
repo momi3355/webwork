@@ -8,7 +8,7 @@
             <td scope="col" class="text-center">{{ boardInfo.id }}</td>
             <th scope="col" class="text-center table-primary">작성일</th>
             <td scope="col" class="text-center">
-              {{ boardInfo.created_date }}
+              {{ date }}
             </td>
             <th scope="col" class="text-center table-primary">이름</th>
             <td scope="col" class="text-center">{{ boardInfo.writer }}</td>
@@ -43,44 +43,49 @@
               <button class="btn btn-xs btn-warning" @click="goToListForm()">
                 목록
               </button>
-              <button class="btn btn-xs btn-danger" @click="">삭제</button>
+              <button
+                class="btn btn-xs btn-danger"
+                @click="deleteBoard(boardInfo.id)"
+              >
+                삭제
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
     <!-- 댓글 -->
-    <div v-if="comments.length > 0" class="row">
-      <ul>
-        <li v-for="com in comments">{{ com.content }}</li>
-      </ul>
-    </div>
-    <div v-else class="alert alert-info">댓글이 없습니다. 😥</div>
+    <comment-comp :bid="searchNo" />
   </div>
 </template>
 <script>
 import axios from "axios";
+import CommentComp from "@/components/CommentComp.vue";
+import { dateForment } from "@/module/date";
 
 export default {
+  components: {
+    CommentComp,
+  },
   data() {
     return {
       searchNo: "",
       boardInfo: {},
-      comments: [],
     };
+  },
+  computed: {
+    date() {
+      let date = this.boardInfo.created_date;
+      return dateForment(date);
+    },
   },
   methods: {
     async fetchInfo() {
       let board = await axios.get(
         `http://localhost:3000/board/${this.searchNo}`
       );
-      this.boardInfo = board.data;
-    },
-    async fetchComment() {
-      let comment = await axios.get(`http://localhost:3000/comment/`);
-      this.comments = comment.data.filter((data) => {
-        return data.bid === Number(this.searchNo);
-      });
+      this.boardInfo = board.data[0];
+      //console.log(this.boardInfo.id);
     },
     goToUpdateForm(id) {
       this.$router.push({ path: "/boardForm", query: { id: id } });
@@ -90,11 +95,25 @@ export default {
       this.$router.push({ path: "/boardList" });
       //페이지 이동
     },
+    async deleteBoard() {
+      if (confirm("해당 개시물을 삭제 하시겠습니까?")) {
+        let result = await axios.delete(
+          `http://localhost:3000/board/${this.searchNo}`
+        );
+        console.log(result);
+        //200 == 정상실행
+        if (result.request.status === 200) {
+          alert("삭제가 완료 되었습니다.");
+          this.goToListForm();
+        } else {
+          alert("삭제 도중 에러가 발생했습니다.");
+        }
+      }
+    },
   },
-  mounted() {
+  created() {
     this.searchNo = this.$route.query.id;
     this.fetchInfo();
-    this.fetchComment();
   },
 };
 </script>

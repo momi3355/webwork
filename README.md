@@ -9,6 +9,7 @@
 - mysql2
 - multer
 - dotenv
+- cors
 
 ### vue.js
 
