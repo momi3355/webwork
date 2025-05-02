@@ -1,5 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
+//환경변수 설정
+require("dotenv").config({ path: "./mysql/.env" });
 
 const app = express();
 //const port = 3100;

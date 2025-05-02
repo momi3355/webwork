@@ -1,32 +1,32 @@
 const express = require("express");
-const query = require("../mysql");
 const router = express.Router();
+const query = require("../mysql");
 
 router.get("", async (req, res) => {
-  const sql = "SELECT * FROM customers";
-  const result = await query(sql, null);
+  //const sql = "SELECT * FROM customers";
+  const result = await query("selectList", null);
   res.send(result);
 });
 
 router.post("", async (req, res) => {
-  const sql = "INSERT customers SET ?";
+  //const sql = "INSERT customers SET ?";
   //INSERT customers(name, email, phone, address) value(?, ?, ?, ?)
-  const result = await query(sql, req.body);
+  const result = await query("insertCustomer", req.body);
   res.send(result);
 });
 
 router.get("/:id", async (req, res) => {
-  const sql = "SELECT * FROM customers WHERE id = ?";
-  const result = await query(sql, req.params.id);
+  //const sql = "SELECT * FROM customers WHERE id = ?";
+  const result = await query("selectById", req.params.id);
   res.send(result);
 });
 
 router.put("/:id", async (req, res) => {
-  const sql = "UPDATE customers SET ? WHERE id = ?";
+  //const sql = "UPDATE customers SET ? WHERE id = ?";
   // UPDATE customers
   // SET name = ?, email = ?, phone = ?, address = ?
   //식으로 해도 되고 'SET ?'하면 객체가 들어가면 된다.
-  const result = await query(sql, [
+  const result = await query("updateCustomer", [
     req.body,
     req.params.id, //where
   ]);
@@ -34,8 +34,8 @@ router.put("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  const sql = "DELETE FROM customers WHERE id = ?";
-  const result = await query(sql, req.params.id);
+  //const sql = "DELETE FROM customers WHERE id = ?";
+  const result = await query("deleteCustomer", req.params.id);
   res.send(result);
 });
 
