@@ -50,6 +50,25 @@ export default {
     },
   },
   methods: {
+    padTwoDigits(num) {
+      return num.toString().padStart(2, "0");
+    },
+    getFormattedDate(date) {
+      return (
+        [
+          date.getFullYear(),
+          this.padTwoDigits(date.getMonth() + 1),
+          this.padTwoDigits(date.getDate()),
+        ].join("-") +
+        " " +
+        [
+          this.padTwoDigits(date.getHours()),
+          this.padTwoDigits(date.getMinutes()),
+          this.padTwoDigits(date.getSeconds()),
+        ].join(":")
+      );
+    },
+
     async fetchInfo() {
       let board = await axios.get(
         `http://localhost:3000/board/${this.searchNo}`

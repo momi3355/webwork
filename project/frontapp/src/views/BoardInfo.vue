@@ -55,7 +55,13 @@
       </table>
     </div>
     <!-- 댓글 -->
+    <<<<<<< HEAD
     <comment-comp :bid="searchNo" />
+    =======
+    <div class="row">
+      <comment-comp :bid="boardInfo.id" />
+    </div>
+    >>>>>>> 60a69f6ef07356fd560e103cdf2596f102151aa6
   </div>
 </template>
 <script>
