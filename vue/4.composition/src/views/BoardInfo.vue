@@ -61,10 +61,9 @@
 <script setup>
 import axios from "axios";
 import CommentComp from "@/components/CommentComp.vue";
-import { ref, computed } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { dateForment } from "@/module/date";
-import { onMounted } from "vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -100,7 +99,7 @@ const deleteBoard = async () => {
   }
 };
 
-onMounted(() => {
+onBeforeMount(() => {
   searchNo.value = route.query.id;
   fetchInfo();
 });

@@ -36,7 +36,12 @@
           </div>
           <div class="chat-remove">
             <div>
-              <button class="btn btn-danger">삭제</button>
+              <button
+                class="btn btn-danger"
+                @click="removeCommentHanlder(com.id)"
+              >
+                삭제
+              </button>
             </div>
           </div>
         </li>
@@ -73,95 +78,108 @@
   </div>
   <div v-else class="alert alert-info">댓글이 없습니다. 😥</div>
 </template>
-<script>
+<script setup>
 import axios from "axios";
 import { dateForment } from "@/module/date";
+import { ref, defineProps, computed, onBeforeMount } from "vue";
 
-export default {
-  props: ["bid"],
-  data() {
-    return {
-      limit: 10,
-      currentPage: 1,
-      totalCount: 1,
-      pageBlockSize: 10, // 한 번에 보여줄 페이지 수
-      pageBlockStart: 1, // 현재 블록의 시작 페이지
-      comments: [],
-      commentInfo: {},
-    };
-  },
-  computed: {
-    totalPages() {
-      return Math.ceil(this.totalCount / this.limit);
-    },
-    pageNumbers() {
-      const pages = [];
-      const end = Math.min(
-        this.pageBlockStart + this.pageBlockSize - 1,
-        this.totalPages
-      );
-      for (let i = this.pageBlockStart; i <= end; i++) {
-        pages.push(i);
-      }
-      return pages;
-    },
-  },
-  methods: {
-    date(created_date) {
-      return dateForment(created_date);
-    },
-    changePage(page) {
-      if (page >= 1 && page <= this.totalPages) {
-        this.currentPage = page;
-        this.fetchComment(page);
-      }
-    },
-    prevBlock() {
-      if (this.pageBlockStart > 1) {
-        this.pageBlockStart = Math.max(
-          1,
-          this.pageBlockStart - this.pageBlockSize
-        );
-        this.changePage(this.pageBlockStart);
-      }
-    },
-    nextBlock() {
-      if (this.pageBlockStart + this.pageBlockSize <= this.totalPages) {
-        this.pageBlockStart = this.pageBlockStart + this.pageBlockSize;
-        this.changePage(this.pageBlockStart);
-      }
-    },
-    async fetchTotalCount() {
-      let total = await axios.get(`/api/comment/total?bid=${this.bid}`);
-      this.totalCount = total.data[0].total;
-    },
-    async fetchComment(page) {
-      const offset = (page - 1) * this.limit;
+const props = defineProps(["bid"]);
 
-      let comment = await axios.get(
-        `/api/comment?bid=${this.bid}&limit=${this.limit}&offset=${offset}`
-      );
-      //console.log(comment.data);
-      this.comments = comment.data;
-      this.currentPage = page;
-    },
-    async addCommentHanlder() {
-      console.log(this.commentInfo);
-      const result = await axios.post("/api/comment", {
-        writer: this.commentInfo.writer,
-        content: this.commentInfo.content,
-        bid: this.bid,
-      });
-      console.log(result.data);
-      if (result.data) {
-      }
-    },
-  },
-  created() {
-    this.fetchTotalCount();
-    this.fetchComment(1);
-  },
+const limit = ref(10);
+const currentPage = ref(1);
+const totalCount = ref(1);
+const pageBlockSize = ref(10); // 한 번에 보여줄 페이지 수
+const pageBlockStart = ref(1); // 현재 블록의 시작 페이지
+const comments = ref([]);
+const commentInfo = ref({});
+
+const bid = computed(() => {
+  return props.bid;
+});
+const totalPages = computed(() => {
+  return Math.ceil(totalCount.value / limit.value);
+});
+const pageNumbers = computed(() => {
+  const pages = [];
+  const end = Math.min(
+    pageBlockStart.value + pageBlockSize.value - 1,
+    totalPages.value
+  );
+  for (let i = pageBlockStart.value; i <= end; i++) {
+    pages.push(i);
+  }
+  return pages;
+});
+
+const date = (created_date) => {
+  return dateForment(created_date);
 };
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+    fetchComment(page);
+  }
+};
+const prevBlock = () => {
+  if (pageBlockStart.value > 1) {
+    pageBlockStart.value = Math.max(
+      1,
+      pageBlockStart.value - pageBlockSize.value
+    );
+    changePage(pageBlockStart.value);
+  }
+};
+const nextBlock = () => {
+  if (pageBlockStart.value + pageBlockSize.value <= totalPages.value) {
+    pageBlockStart.value = pageBlockStart.value + pageBlockSize.value;
+    changePage(pageBlockStart.value);
+  }
+};
+const fetchTotalCount = async () => {
+  //console.log(bid.value);
+  let total = await axios.get(`/api/comment/total?bid=${bid.value}`);
+  totalCount.value = total.data[0].total;
+};
+const fetchComment = async (page) => {
+  const offset = (page - 1) * limit.value;
+
+  let comment = await axios.get(
+    `/api/comment?bid=${bid.value}&limit=${limit.value}&offset=${offset}`
+  );
+  //console.log(comment.data);
+  comments.value = comment.data;
+  currentPage.value = page;
+};
+const addCommentHanlder = async () => {
+  //console.log(commentInfo.value);
+  const result = await axios.post("/api/comment", {
+    writer: commentInfo.value.writer,
+    content: commentInfo.value.content,
+    bid: bid.value,
+  });
+  console.log(result.data);
+  if (result.data) {
+    fetchTotalCount();
+    fetchComment(1);
+    alert("댓글이 추가 되었습니다");
+  }
+};
+const removeCommentHanlder = async (id) => {
+  if (confirm("해당 댓글을 삭제 하시겠습니까?")) {
+    const result = await axios.delete(`/api/comment/${id}`);
+    console.log(result.data);
+    if (result.data) {
+      fetchTotalCount();
+      fetchComment(currentPage.value);
+      alert("댓글이 삭제 되었습니다");
+    }
+  }
+};
+
+onBeforeMount(() => {
+  fetchTotalCount();
+  fetchComment(1);
+});
 </script>
 <style scoped>
 .addchat-box {

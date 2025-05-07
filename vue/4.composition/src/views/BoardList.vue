@@ -22,7 +22,7 @@
         </tr>
       </tbody>
     </table>
-    <button type="button" class="btn btn-xs btn-info" @click="addButton">
+    <button type="button" class="btn btn-xs btn-info" @click="goToAddForm">
       추가
     </button>
   </div>
@@ -31,7 +31,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { dateForment } from "@/module/date";
 
@@ -43,12 +43,17 @@ const getBoardList = async () => {
   let result = await axios.get("/api/board");
   boardList.value = result.data;
 };
-const goToDetail = async (id) => {
+const goToDetail = (id) => {
   router.push({ path: "/boardInfo", query: { id: id } });
   //this$router.push({ path: "/boardInfo", query: { id: id } });
 };
+const goToAddForm = () => {
+  router.push({ path: "/boardForm" });
+};
 
-getBoardList();
+onBeforeMount(() => {
+  getBoardList();
+});
 </script>
 
 <style scoped>

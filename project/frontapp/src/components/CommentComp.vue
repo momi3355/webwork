@@ -36,7 +36,12 @@
           </div>
           <div class="chat-remove">
             <div>
-              <button class="btn btn-danger">삭제</button>
+              <button
+                class="btn btn-danger"
+                @click="removeCommentHanlder(com.id)"
+              >
+                삭제
+              </button>
             </div>
           </div>
         </li>
@@ -146,7 +151,7 @@ export default {
       this.currentPage = page;
     },
     async addCommentHanlder() {
-      console.log(this.commentInfo);
+      //console.log(this.commentInfo);
       const result = await axios.post("/api/comment", {
         writer: this.commentInfo.writer,
         content: this.commentInfo.content,
@@ -154,6 +159,20 @@ export default {
       });
       console.log(result.data);
       if (result.data) {
+        this.fetchTotalCount();
+        this.fetchComment(1);
+        alert("댓글이 추가 되었습니다");
+      }
+    },
+    async removeCommentHanlder(id) {
+      if (confirm("해당 댓글을 삭제 하시겠습니까?")) {
+        const result = await axios.delete(`/api/comment/${id}`);
+        console.log(result.data);
+        if (result.data) {
+          this.fetchTotalCount();
+          this.fetchComment(this.currentPage);
+          alert("댓글이 삭제 되었습니다");
+        }
       }
     },
   },
