@@ -26,18 +26,26 @@
       추가
     </button>
   </div>
+  {{ route.fullPath }}
 </template>
 
 <script setup>
 import axios from "axios";
-import { dateForment } from "@/module/date";
 import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { dateForment } from "@/module/date";
 
+const router = useRouter(); //라우터
+const route = useRoute(); //라우트
 const boardList = ref([]);
 
 const getBoardList = async () => {
   let result = await axios.get("/api/board");
   boardList.value = result.data;
+};
+const goToDetail = async (id) => {
+  router.push({ path: "/boardInfo", query: { id: id } });
+  //this$router.push({ path: "/boardInfo", query: { id: id } });
 };
 
 getBoardList();

@@ -17,7 +17,7 @@
         v-model="boardInfo.content"
       ></textarea>
 
-      <div v-if="this.searchNo > 0">
+      <div v-if="searchNo > 0">
         <label for="regdate">작성일자</label>
         <input type="text" readonly v-bind:value="date" />
       </div>
@@ -32,59 +32,57 @@
     </form>
   </div>
 </template>
-<script>
+<script setup>
 import axios from "axios";
 import { dateForment } from "@/module/date";
+import { ref, computed, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
-export default {
-  data() {
-    return {
-      searchNo: "",
-      boardInfo: {},
-    };
-  },
-  computed: {
-    date() {
-      const date = this.boardInfo.created_date;
-      return dateForment(date);
-    },
-  },
-  methods: {
-    async fetchInfo() {
-      let board = await axios.get(`/api/board/${this.searchNo}`);
-      this.boardInfo = board.data[0];
-    },
-    async boardUpdate(id) {
-      const url = "/api/board";
-      let param = {
-        title: this.boardInfo.title,
-        content: this.boardInfo.content,
-        writer: this.boardInfo.writer,
-      };
-      if (id > 0) {
-        //수정
-        const result = await axios.put(`${url}/${id}`, param);
-        if (result.data) {
-          alert("정상적으로 수정되었습니다.");
-          this.$router.push({ path: "/boardList" });
-        }
-      } else {
-        //등록
-        const result = await axios.post(url, param);
-        if (result.data) {
-          alert("정상적으로 등록되었습니다.");
-          this.$router.push({ path: "/boardList" });
-        }
-      }
-    },
-  },
-  mounted() {
-    this.searchNo = this.$route.query.id || "";
-    if (this.searchNo > 0) {
-      this.fetchInfo();
-    }
-  },
+const router = useRouter();
+const route = useRoute();
+const searchNo = ref("");
+const boardInfo = ref({});
+
+const date = computed(() => {
+  const _date = boardInfo.value.created_date;
+  return dateForment(_date);
+});
+
+const fetchInfo = async () => {
+  let board = await axios.get(`/api/board/${searchNo.value}`);
+  boardInfo.value = board.data[0];
 };
+const boardUpdate = async (id) => {
+  const url = "/api/board";
+  let param = {
+    title: boardInfo.value.title,
+    content: boardInfo.value.content,
+    writer: boardInfo.value.writer,
+  };
+  if (id > 0) {
+    //수정
+    const result = await axios.put(`${url}/${id}`, param);
+    if (result.data) {
+      alert("정상적으로 수정되었습니다.");
+      router.push({ path: "/boardList" });
+    }
+  } else {
+    //등록
+    const result = await axios.post(url, param);
+    if (result.data) {
+      alert("정상적으로 등록되었습니다.");
+      router.push({ path: "/boardList" });
+    }
+  }
+};
+
+onMounted(() => {
+  searchNo.value = route.query.id || "";
+  if (searchNo.value > 0) {
+    fetchInfo();
+    console.log(boardInfo.value);
+  }
+});
 </script>
 <style scoped>
 /* Style inputs with type="text", select elements and textareas */
