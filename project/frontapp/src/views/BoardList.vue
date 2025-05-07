@@ -46,10 +46,10 @@ export default {
     },
     fetchList() {
       axios
-        .get(`http://localhost:3000/board`)
+        .get(`/api/board`)
         .then((response) => (this.boardList = response.data));
       //then으로 하지않고 동기적 처리가 가능하다.
-      //let result = await axios.get(`http://localhost:3000/board`);
+      //let result = await axios.get(`/api/board`);
       //this.boardList = result.data;
     },
     goToDetail(id) {

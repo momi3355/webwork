@@ -11,7 +11,7 @@
 
       function getBoard1() {
         //비동기적 처리
-        let res = fetch(`http://localhost:3000/board/1`)
+        let res = fetch(`/api/board/1`)
           .then((res) => res.json())
           .then((res) => console.log("1", res.title));
         console.log("2", "end response");
@@ -19,7 +19,7 @@
 
       async function getBoard2() {
         //동기적 처리
-        let res = await fetch(`http://localhost:3000/board/1`);
+        let res = await fetch(`/api/board/1`);
         res = await res.json();
         console.log("1", res.title);
         console.log("2", "end response");

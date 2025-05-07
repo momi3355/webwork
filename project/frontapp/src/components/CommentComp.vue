@@ -1,6 +1,29 @@
 <template>
+  <div class="row">
+    <div class="addchat-box">
+      <h3>댓글 추가</h3>
+      <ul class="addchat-content">
+        <li class="addchat-item">
+          <div class="addcaht-item-box">
+            <label class="addchat-label">작성자 </label
+            ><input type="text" v-model="commentInfo.writer" />
+          </div>
+        </li>
+        <li class="addchat-item">
+          <div class="addcaht-item-box">
+            <label class="addchat-label">댓글 </label
+            ><textarea v-model="commentInfo.content"></textarea>
+          </div>
+        </li>
+      </ul>
+      <button type="button" class="btn btn-primary" @click="addCommentHanlder">
+        추가하기
+      </button>
+    </div>
+  </div>
   <div v-if="comments.length > 0" class="row">
     <div class="chat-box">
+      <h3>댓글</h3>
       <ul class="chat-list">
         <li v-for="com in comments" :key="com.id" class="chat-message">
           <div class="chat-bubble">
@@ -48,6 +71,7 @@
 <script>
 import axios from "axios";
 import { dateForment } from "@/module/date";
+axios.defaults.baseURL = "/api/comment";
 
 export default {
   props: ["bid"],
@@ -59,6 +83,7 @@ export default {
       pageBlockSize: 10, // 한 번에 보여줄 페이지 수
       pageBlockStart: 1, // 현재 블록의 시작 페이지
       comments: [],
+      commentInfo: {},
     };
   },
   computed: {
@@ -103,20 +128,29 @@ export default {
       }
     },
     async fetchTotalCount() {
-      let total = await axios.get(
-        `http://localhost:3000/comment/total?bid=${this.bid}`
-      );
+      let total = await axios.get(`/total?bid=${this.bid}`);
       this.totalCount = total.data[0].total;
     },
     async fetchComment(page) {
       const offset = (page - 1) * this.limit;
 
       let comment = await axios.get(
-        `http://localhost:3000/comment?bid=${this.bid}&limit=${this.limit}&offset=${offset}`
+        `?bid=${this.bid}&limit=${this.limit}&offset=${offset}`
       );
       //console.log(comment.data);
       this.comments = comment.data;
       this.currentPage = page;
+    },
+    async addCommentHanlder() {
+      console.log(this.commentInfo);
+      const result = await axios.post("/", {
+        writer: this.commentInfo.writer,
+        content: this.commentInfo.content,
+        bid: this.bid,
+      });
+      console.log(result.data);
+      if (result.data) {
+      }
     },
   },
   created() {
@@ -126,6 +160,32 @@ export default {
 };
 </script>
 <style scoped>
+.addchat-box {
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #f1f1f1;
+}
+.addchat-content {
+  list-style: none;
+  margin: 25px 0;
+}
+.addchat-item {
+  margin: 10px 0;
+}
+.addcaht-item-box {
+  width: 400px;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: #e0e0e0;
+}
+.addcaht-item-box > .addchat-label {
+  width: 65px;
+}
+.addcaht-item-box > input,
+.addcaht-item-box > textarea {
+  width: 80%;
+}
 .pagination-container {
   margin: 30px;
 }
