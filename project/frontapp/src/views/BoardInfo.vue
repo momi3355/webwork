@@ -81,7 +81,7 @@ export default {
   },
   methods: {
     async fetchInfo() {
-      let board = await axios.get(`/api/board/${this.searchNo}`);
+      let board = await axios.get(`api/board/${this.searchNo}`);
       this.boardInfo = board.data[0];
       //console.log(this.boardInfo.id);
     },
@@ -95,7 +95,7 @@ export default {
     },
     async deleteBoard() {
       if (confirm("해당 개시물을 삭제 하시겠습니까?")) {
-        let result = await axios.delete(`/api/board/${this.searchNo}`);
+        let result = await axios.delete(`api/board/${this.searchNo}`);
         console.log(result);
         //200 == 정상실행
         if (result.request.status === 200) {

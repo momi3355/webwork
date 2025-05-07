@@ -22,28 +22,6 @@ const router = createRouter({
       name: "boardList",
       component: () => import("@/views/BoardList.vue"),
     },
-    {
-      path: "/boardForm",
-      name: "boardForm",
-      component: () => import("@/views/BoardForm.vue"),
-    },
-    {
-      path: "/boardInfo",
-      //param으로 전달 하면"/boardInfo/:id"로 하면 된다.
-      // 하지만 쿼리로 전달하기 때문에 적지 않아도 된다.
-      name: "boardInfo",
-      component: () => import("@/views/BoardInfo.vue"),
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: () => import("@/views/loginView.vue"),
-    },
-    {
-      path: "/boardTable",
-      name: "boardTable",
-      component: () => import("@/views/BoardTable.vue"),
-    },
   ],
 });
 

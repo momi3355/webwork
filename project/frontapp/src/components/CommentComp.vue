@@ -34,6 +34,11 @@
             </div>
             <div class="chat-time">{{ date(com.created_date) }}</div>
           </div>
+          <div class="chat-remove">
+            <div>
+              <button class="btn btn-danger">삭제</button>
+            </div>
+          </div>
         </li>
       </ul>
     </div>
@@ -71,7 +76,6 @@
 <script>
 import axios from "axios";
 import { dateForment } from "@/module/date";
-axios.defaults.baseURL = "/api/comment";
 
 export default {
   props: ["bid"],
@@ -128,14 +132,14 @@ export default {
       }
     },
     async fetchTotalCount() {
-      let total = await axios.get(`/total?bid=${this.bid}`);
+      let total = await axios.get(`/api/comment/total?bid=${this.bid}`);
       this.totalCount = total.data[0].total;
     },
     async fetchComment(page) {
       const offset = (page - 1) * this.limit;
 
       let comment = await axios.get(
-        `?bid=${this.bid}&limit=${this.limit}&offset=${offset}`
+        `/api/comment?bid=${this.bid}&limit=${this.limit}&offset=${offset}`
       );
       //console.log(comment.data);
       this.comments = comment.data;
@@ -143,7 +147,7 @@ export default {
     },
     async addCommentHanlder() {
       console.log(this.commentInfo);
-      const result = await axios.post("/", {
+      const result = await axios.post("/api/comment", {
         writer: this.commentInfo.writer,
         content: this.commentInfo.content,
         bid: this.bid,
@@ -220,5 +224,8 @@ export default {
   font-size: 0.75em;
   color: #666;
   text-align: right;
+}
+.chat-remove {
+  position: relative;
 }
 </style>
