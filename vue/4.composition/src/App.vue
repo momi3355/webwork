@@ -21,13 +21,18 @@ import HelloWorld from "./components/HelloWorld.vue";
           <nav>
             <RouterLink to="/">Home</RouterLink>
             <RouterLink to="/boardList">BoardList</RouterLink>
+            <RouterLink to="/nested">Nested</RouterLink>
+            <RouterLink to="/compView">ComponentView</RouterLink>
+            <RouterLink to="/provideInject">provide</RouterLink>
+            <RouterLink to="/watch">watch</RouterLink>
           </nav>
         </div>
       </header>
     </div>
   </header>
-
-  <RouterView />
+  <div class="container">
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>

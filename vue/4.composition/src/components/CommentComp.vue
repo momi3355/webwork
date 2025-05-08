@@ -81,7 +81,7 @@
 <script setup>
 import axios from "axios";
 import { dateForment } from "@/module/date";
-import { ref, defineProps, computed, onBeforeMount } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 
 const props = defineProps(["bid"]);
 

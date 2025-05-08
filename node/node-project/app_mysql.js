@@ -33,7 +33,7 @@ app.use(
       secure: false, // true 이면 https 환경에서만 쿠키 정보를 주고 받도록 처리,
       maxAge: 60000, // 쿠키가 유지되는 시간 (밀리세컨드 단위)
     },
-    store: new fileStore(), // 세션 저장소로 fileStore 사용
+    //store: new fileStore(), // 세션 저장소로 fileStore 사용
   })
 );
 

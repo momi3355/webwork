@@ -32,6 +32,26 @@ const router = createRouter({
       name: "boardForm",
       component: () => import("@/views/BoardForm.vue"),
     },
+    {
+      path: "/nested",
+      name: "nested",
+      component: () => import("@/views/NestedComponent.vue"),
+    },
+    {
+      path: "/compView",
+      name: "compView",
+      component: () => import("@/views/ComponentView.vue"),
+    },
+    {
+      path: "/provideInject",
+      name: "provideInject",
+      component: () => import("@/views/ProvideInject.vue"),
+    },
+    {
+      path: "/watch",
+      name: "watch",
+      component: () => import("@/views/WatchView.vue"),
+    },
   ],
 });
 
