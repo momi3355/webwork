@@ -4,7 +4,6 @@ const query = require("../mysql");
 const table = "bookInfo";
 
 router.get("", async (req, res) => {
-  console.log("d");
   const result = await query({ table, sql: "selectList" }, null);
   res.send(result);
 });
