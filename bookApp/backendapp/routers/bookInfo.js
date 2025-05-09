@@ -14,6 +14,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("", async (req, res) => {
+  console.log(req.headers);
   const result = await query({ table, sql: "insertBookInfo" }, req.body);
   res.send(result);
 });

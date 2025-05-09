@@ -31,7 +31,10 @@
     </div>
     <div class="btn-container">
       <button class="btn btn-primary" @click="gotoList()">목록으로</button>
-      <button class="btn btn-primary" @click="gotoForm(book.id)">수정</button>
+      <button class="btn btn-warning" @click="gotoForm(book.id)">수정</button>
+      <button class="btn btn-danger" @click="deleteBookHeadler(book.id)">
+        삭제
+      </button>
     </div>
   </div>
   <div v-else class="book-container">찾을 수 없는 췍 😥</div>
@@ -48,10 +51,18 @@ const route = useRoute();
 const book = ref({});
 
 const gotoList = () => {
-  router.push({ path: "/book" });
+  router.push({ path: "/" });
 };
 const gotoForm = (id) => {
   router.push({ path: "/bookform", query: { id: id } });
+};
+const deleteBookHeadler = async (id) => {
+  if (confirm("해당 도서정보를 삭제 하시겠습니까?")) {
+    const result = await axios.delete(`/api/bookinfo/${id}`);
+    console.log(result.data);
+    alert("성공적으로 삭제가 되었습니다.");
+    router.push({ path: "/" });
+  }
 };
 
 onBeforeMount(async () => {
