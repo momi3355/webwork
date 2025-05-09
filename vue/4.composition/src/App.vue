@@ -25,6 +25,7 @@ import HelloWorld from "./components/HelloWorld.vue";
             <RouterLink to="/compView">ComponentView</RouterLink>
             <RouterLink to="/provideInject">provide</RouterLink>
             <RouterLink to="/watch">watch</RouterLink>
+            <RouterLink to="/store">store</RouterLink>
           </nav>
         </div>
       </header>

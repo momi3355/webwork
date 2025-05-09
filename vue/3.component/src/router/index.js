@@ -42,6 +42,16 @@ const router = createRouter({
       name: "slot",
       component: () => import("@/views/SlotView.vue"),
     },
+    {
+      path: "/vuetify",
+      name: "vuetify",
+      component: () => import("@/views/VuetifyView.vue"),
+    },
+    {
+      path: "/store",
+      name: "store",
+      component: () => import("@/views/StoreView.vue"),
+    },
   ],
 });
 
