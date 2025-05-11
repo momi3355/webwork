@@ -1,7 +1,7 @@
 <template>
   <div v-if="book" class="bookdetail-container">
     <div class="book-container">
-      <img :src="book.image" :alt="book.title" />
+      <img :src="getImagesrc" :alt="book.title" />
       <div class="bookInfo">
         <ul>
           <li><b>책 제목</b></li>
@@ -42,13 +42,18 @@
 
 <script setup>
 import axios from "axios";
-import { onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const router = useRouter();
 const route = useRoute();
 
 const book = ref({});
+
+const getImagesrc = computed(() => {
+  let src = book.value.image;
+  return src ? `/api/${book.value.image}` : "#";
+});
 
 const gotoList = () => {
   router.push({ path: "/" });
@@ -84,7 +89,7 @@ onBeforeMount(async () => {
 }
 
 .book-container img {
-  width: 400px;
+  height: 450px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }

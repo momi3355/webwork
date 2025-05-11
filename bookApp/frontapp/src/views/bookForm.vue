@@ -31,7 +31,7 @@
 
       <div v-if="imageItem === 'url'">
         <label for="image_url">이미지 URL</label>
-        <input type="text" id="image_url" v-model="book.image" />
+        <input type="text" id="image_url" v-model="imageurl" />
       </div>
       <div v-else-if="imageItem === 'file'">
         <label for="image_file">이미지 파일</label><br />
@@ -69,6 +69,7 @@
 import axios from "axios";
 import { onBeforeMount, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { dateForment } from "@/module/date";
 
 const router = useRouter();
 const route = useRoute();
@@ -89,28 +90,49 @@ const imageSelect = reactive([
   },
 ]);
 const imageItem = ref(imageSelect[0].value);
+const imageurl = ref("");
 const imagefile = ref({});
 
 function base64(file) {
-  // 비동기적으로 동작하기 위하여 promise를 return 해준다.
   return new Promise((resolve) => {
     const reader = new FileReader();
-    // load 이벤트 핸들러. 리소스 로딩이 완료되면 실행됨.
     reader.onload = (e) => {
       resolve(e.target.result);
       const previewImage = document.getElementById("preview");
       previewImage.src = e.target.result;
-    }; // ref previewImage 값 변경
+    };
 
-    // 컨텐츠를 특정 file에서 읽어옴. 읽는 행위가 종료되면 loadend 이벤트 트리거함
-    // & base64 인코딩된 스트링 데이터가 result 속성에 담김
     reader.readAsDataURL(file);
   });
+}
+
+async function deleteImage(src) {
+  if (src) {
+    let del_res = await axios.delete(`/api/delete/${src}`);
+    console.log(del_res);
+  }
 }
 
 const updateBookHeadler = async () => {
   if (book.value) {
     const id = book.value.id;
+    if (imageItem.value === "file" && imagefile.value) {
+      const formData = new FormData();
+      formData.append("file", imagefile.value);
+
+      //파일 업로드 로직
+      let result = await axios({
+        url: "/api/upload/image",
+        method: "POST",
+        headers: { "Content-Type": "multipart/form-data" },
+        data: formData,
+      });
+      deleteImage(book.value.image);
+      book.value.image = result.data.fileName; //이미지 경로 변경
+    } else if (imageItem.value === "url" && imageurl.value) {
+      deleteImage(book.value.image);
+      book.value.image = imageurl.value; //이미지 경로 변경
+    }
     if (id) {
       // const value = book.value;
       // const data = {
@@ -130,27 +152,14 @@ const updateBookHeadler = async () => {
       console.log(result.data);
       alert("도서 정보가 추가 되었습니다.");
     }
-    if (imagefile) {
-      //파일 업로드 로직
-      // axios({
-      //   url: "/api/imagesave/",
-      //   method: "POST",
-      //   headers: { "Content-Type": "multipart/form-data" },
-      //   data: imagefile,
-      // })
-      //   .then((res) => {
-      //     console.log(res.data.message);
-      //   })
-      //   .catch((err) => {
-      //     alert(err);
-      //   });
-    }
     router.push({ path: "/" });
   }
 };
 const onFileChange = async (files) => {
-  imagefile = files[0];
-  await base64(files[0]);
+  let file = files[0];
+  //console.log(file);
+  await base64(file);
+  imagefile.value = file;
 };
 
 onBeforeMount(async () => {
@@ -158,6 +167,11 @@ onBeforeMount(async () => {
   if (id) {
     const result = await axios.get(`/api/bookinfo/${id}`);
     book.value = result.data[0];
+    book.value.created_date = dateForment(book.value.created_date);
+    if (book.value.image) {
+      imageItem.value = "url";
+      imageurl.value = book.value.image;
+    }
   }
 });
 </script>
